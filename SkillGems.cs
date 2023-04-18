@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Vector2 = System.Numerics.Vector2;
 
 namespace SkillGems
@@ -43,14 +42,15 @@ namespace SkillGems
 
         private void SetCursorPos(Element e)
         {
-            SetCursorPos(e.GetClientRectCache.ClickRandomNum(5, 5));
+            SetCursorPos(e.GetClientRectCache.Center.ToVector2Num());
         }
 
         public override Job Tick()
         {
-            if (!Input.IsKeyDown(Keys.A) || !PanelVisible())
+            if (!Input.IsKeyDown(Settings.Run.Value) || !PanelVisible())
             {
-                _gemLevelingCts.Cancel();
+                if (_gemLevelingCts != null)
+                    _gemLevelingCts.Cancel();
             }
             else if (CanTick() && IsPlayerAlive() && AnythingToLevel() && PanelVisible() && _gemLevelingTask == null)
             {
