@@ -88,11 +88,11 @@ namespace SkillGems
             }
 
             SetCursorPos(elementToClick);
-            await Task.Delay(ActionDelay, cancellationToken);
+            await Task.Delay(ActionDelay);
             Input.LeftDown();
-            await Task.Delay(ActionDelay, cancellationToken);
+            await Task.Delay(ActionDelay);
             Input.LeftUp();
-            await Task.Delay(GemDelay, cancellationToken);
+            await Task.Delay(GemDelay);
 
             if (cancellationToken.IsCancellationRequested) return;
         }
