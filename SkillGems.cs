@@ -104,6 +104,7 @@ namespace SkillGems
                 || GameController.Game.IngameState.IngameUi.TreePanel.IsVisible
                 || GameController.Game.IngameState.IngameUi.SyndicatePanel.IsVisible
                 || GameController.Game.IngameState.IngameUi.OpenRightPanel.IsVisible
+                || GameController.Game.IngameState.IngameUi.ChatTitlePanel.IsVisible
                 || GameController.Game.IngameState.IngameUi.DelveWindow.IsVisible);
         }
 
