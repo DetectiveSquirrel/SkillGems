@@ -2,9 +2,6 @@
 using ExileCore.PoEMemory;
 using ExileCore.PoEMemory.Components;
 using ExileCore.Shared.Helpers;
-using Microsoft.VisualBasic.Devices;
-using SharpDX;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -49,8 +46,7 @@ namespace SkillGems
         {
             if (!Input.IsKeyDown(Settings.Run.Value) || !PanelVisible())
             {
-                if (_gemLevelingCts != null)
-                    _gemLevelingCts.Cancel();
+                _gemLevelingCts?.Cancel();
             }
             else if (CanTick() && IsPlayerAlive() && AnythingToLevel() && PanelVisible() && _gemLevelingTask == null)
             {
@@ -69,17 +65,17 @@ namespace SkillGems
 
         private async Task BeginGemLevel(CancellationToken cancellationToken)
         {
-            List<Element> gemsToLvlUpElements = GetLevelableGems();
+            var gemsToLvlUpElements = GetLevelableGems();
 
             if (!gemsToLvlUpElements.Any()) return;
 
-            Element elementToClick = gemsToLvlUpElements
+            var elementToClick = gemsToLvlUpElements
                 .SelectMany(e => e.Children)
                 .Where(e => (int)e.Height > 40 && (int)e.Height < 50)
                 .FirstOrDefault();
 
-            int ActionDelay = Settings.DelayBetweenEachMouseEvent.Value;
-            int GemDelay = Settings.DelayBetweenEachGemClick.Value;
+            var ActionDelay = Settings.DelayBetweenEachMouseEvent.Value;
+            var GemDelay = Settings.DelayBetweenEachGemClick.Value;
 
             if (Settings.AddPingIntoDelay.Value)
             {
@@ -130,15 +126,21 @@ namespace SkillGems
 
         private List<Element> GetLevelableGems()
         {
-            List<Element> gemsToLevelUp = new List<Element>();
+            var gemsToLevelUp = new List<Element>();
 
             var possibleGemsToLvlUpElements = GameController.IngameState.IngameUi?.GemLvlUpPanel?.GemsToLvlUp;
 
             if (possibleGemsToLvlUpElements != null && possibleGemsToLvlUpElements.Any())
-                foreach (Element possibleGemsToLvlUpElement in possibleGemsToLvlUpElements)
-                    foreach (Element elem in possibleGemsToLvlUpElement.Children)
+            {
+                foreach (var possibleGemsToLvlUpElement in possibleGemsToLvlUpElements)
+                {
+                    foreach (var elem in possibleGemsToLvlUpElement.Children)
+                    {
                         if (elem.Text != null && elem.Text.Contains("Click to level"))
                             gemsToLevelUp.Add(possibleGemsToLvlUpElement);
+                    }
+                }
+            }
 
             return gemsToLevelUp;
         }
