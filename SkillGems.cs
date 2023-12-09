@@ -69,10 +69,7 @@ namespace SkillGems
 
             if (!gemsToLvlUpElements.Any()) return;
 
-            var elementToClick = gemsToLvlUpElements
-                .SelectMany(e => e.Children)
-                .Where(e => (int)e.Height > 40 && (int)e.Height < 50)
-                .FirstOrDefault();
+            var elementToClick = gemsToLvlUpElements.ToList().FirstOrDefault()?.GetChildAtIndex(1);
 
             var ActionDelay = Settings.DelayBetweenEachMouseEvent.Value;
             var GemDelay = Settings.DelayBetweenEachGemClick.Value;
